@@ -1,37 +1,30 @@
-/*********�|�����[�t�B�b�N�֘A***********/
-/*��:�����̐e�e�[�u�����Q�Ƃ�����
-Bugs�e�[�u����FeatureRequests�e�[�u���������Q�Ƃ���Comments�e�[�u���Ȃ�
+/*********ポリモーフィック関連***********/
+/*状況:複数の親テーブルを参照したい
+BugsテーブルとFeatureRequestsテーブル両方を参照するCommentsテーブルなど
 */
 
-
-/*�A���`�p�^�[��:��d�ړI�̊O���L�[���g�p*/
-
+/*アンチパターン:二重目的の外部キーを使用*/
 CREATE TABLE Comments (
 	comment_id SERIAL PRIMARY KEY,
-	issue_type VARCHAR(20), -- 'Bugs'�܂���'FeatureRequests'���i�[�����
+	issue_type VARCHAR(20), -- 'Bugs'または'FeatureRequests'が格納される
 	issue_id BIGINT UNSIGNED NOT NULL,
 	author BIGINT UNSIGNED NOT NULL,
 	comment_date DATETIME,
 	comment TEXT,
 	FOREIGN KEY (author) REFERENCES Accounts(account_id),
 );
-/*�O���L�[�ł́A�e�[�u����1�̂ݎw�肵�Ȃ���΂Ȃ�Ȃ��i�����̃e�[�u�����w��ł��Ȃ��j�̂�
-issue_id�̂��߂̊O���L�[�錾���o���Ȃ�
-�|�����[�t�B�b�N�֘A���`����ƎQ�Ɛ�����������`�ł��Ȃ�
-�܂��|�����[�t�B�b�N�֘A�́A�e�e�[�u�������ɑS���֌W���Ȃ��ꍇ�ɂ��g�p�����
-Ex:�ڋq�iUsers�j�ƒ����iOrders�j��2�̃e�[�u���Ɋ֘A����Z���iAddresses�j�e�[�u���̏Z�������Ȃ�
+/*外部キーでは、テーブルを1つのみ指定しなければならない（複数のテーブルを指定できない）ので
+issue_idのための外部キー宣言が出来ない
+ポリモーフィック関連を定義すると参照整合性制約を定義できない
+またポリモーフィック関連は、親テーブル同時に全く関係がない場合にも使用される
+Ex:顧客（Users）と注文（Orders）の2つのテーブルに関連する住所（Addresses）テーブルの住所属性など
 */
 
-
-
-
-
-/*������*/
+/*解決策*/
 /*
-1.�����̐e�e�[�u�����ꂼ��Ɍ����e�[�u�����쐬�A
-�e�e�[�u���ł́AComments�ւ̊O���L�[�ɉ����āA�e�e�e�[�u���ւ��������O���L�[���`
+1.複数の親テーブルそれぞれに交差テーブルを作成、
+各テーブルでは、Commentsへの外部キーに加えて、各親テーブルへも同じく外部キーを定義
 */
-
 CREATE TABLE BugsComments (
 	issue_id BIGINT UNSIGNED NOT NULL,
 	comment_id BIGINT UNSIGNED NOT NULL,
@@ -48,4 +41,4 @@ CREATE TABLE FeaturesComments (
 	FOREIGN KEY (comment_id) REFERENCES Comments(comment_id)
 );
 
-/*�e�[�u���Ԃ̃����[�V�����V�b�v�ɂ́A�Q�ƌ��e�[�u���ƎQ�Ɛ�e�[�u������ɂ��ꂼ��1�����Ȃ����Ƃ��ӎ����Ă���*/
+/*テーブル間のリレーションシップには、参照元テーブルと参照先テーブルが常にそれぞれ1つしかないことを意識しておく*/
