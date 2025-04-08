@@ -32,7 +32,6 @@ CREATE TABLE BugsComments (
 	FOREIGN KEY (issue_id) REFERENCES Bugs(issue_id),
 	FOREIGN KEY (comment_id) REFERENCES Comments(comment_id)
 );
-
 CREATE TABLE FeaturesComments (
 	issue_id BIGINT UNSIGNED NOT NULL,
 	comment_id BIGINT UNSIGNED NOT NULL,
@@ -40,5 +39,4 @@ CREATE TABLE FeaturesComments (
 	FOREIGN KEY (issue_id) REFERENCES FeatureRequests(issue_id),
 	FOREIGN KEY (comment_id) REFERENCES Comments(comment_id)
 );
-
 /*テーブル間のリレーションシップには、参照元テーブルと参照先テーブルが常にそれぞれ1つしかないことを意識しておく*/
