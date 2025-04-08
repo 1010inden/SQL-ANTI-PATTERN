@@ -1,24 +1,22 @@
-/*********�V���[�h�L�[�E�j�[�g�t���[�N�i�^���L�[���ȏǁj***********/
-/*��:���R�[�h�̌��Ԃ��C�ɂ���
+/*********シュードキー・ニートフリーク（疑似キー潔癖症）***********/
+/*状況:レコードの欠番を気にする
 */
 /*
 bud_id	status	product_name
 1		OPEN	Open RoundFile
-2		4	�@�@ReConsider
+2		4	　　ReConsider
 4		OPEN	ReConsider
-
 */
-
-/*�A���`�p�^�[��:���Ԃ𖄂߂�*/
+/*アンチパターン:隙間を埋める*/
 /*
-1.���Ԃ����蓖��
+1.欠番を割り当て
 bud_id	status		product_name
 1		OPEN		Open RoundFile
-2		4	�@�@		ReConsider
+2		4	　　		ReConsider
 4		OPEN		ReConsider
 3		NEW	Visual  TurboBuilder
 
-�ł������Ȍ��Ԃ̒l����肷�邽�ߕs�v�Ȏ��Ȍ����N�G�����K�v
+最も小さな欠番の値を特定するため不要な自己結合クエリが必要
 SELECT b1.bug_id = 1 AS max_bug_id
 FROM Bugs AS b1
 LEFT OUTER JOIN Bugs AS b2 ON b1.bug_id + 1 = b2.bug_id
@@ -27,20 +25,16 @@ ORDER BY b1.bug_id LIMIT 1;
  */
 
  /*
- 2.�����s�ɔԍ���U�蒼��
+ 2.既存行に番号を振り直す
  bud_id	status	product_name
 1		OPEN	Open RoundFile
-2		4	�@�@ReConsiderl
+2		4	　　ReConsiderl
 3		OPEN	ReConsider
 
- 1.���l�Ɍ��Ԃ̃L�[�l����肷��K�v������
- �܂��X�V�ŋ�����Ԃ������N�����\��������A����Ɍ��Ԃ�������Ή��x�����Ȃ��Ƃ����Ȃ�
+ 1.同様に欠番のキー値を特定する必要がある
+ また更新で競合状態を引き起こす可能性があり、さらに欠番が多ければ何度もやらないといけない
 */
-
-
-
-/*������F�[���L�[�̌��Ԃ͖��߂Ȃ�
-��L�[�̒l���[���͈�ӂŔ�NULL�̒l�Ƃ������Ƃ����Ȃ̂Ŋe�s�̎��ʂ����o���Ă���΂悢�B
-
+/*解決策：擬似キーの欠番は埋めない
+主キーの値ルールは一意で非NULLの値ということだけなので各行の識別さえ出来ていればよい。
 */
 
