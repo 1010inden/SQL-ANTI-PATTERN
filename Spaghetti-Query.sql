@@ -1,16 +1,12 @@
-/*********ƒXƒpƒQƒbƒeƒBƒNƒGƒŠ***********/
-/*ó‹µ:–Ú‚Ì‘O‚ÌŽdŽ–‚ð1‚Â‚ÌƒNƒGƒŠ‚ÅŽÀŒ»‚·‚é
+/*********ã‚¹ãƒ‘ã‚²ãƒƒãƒ†ã‚£ã‚¯ã‚¨ãƒª***********/
+/*çŠ¶æ³:ç›®ã®å‰ã®ä»•äº‹ã‚’1ã¤ã®ã‚¯ã‚¨ãƒªã§å®Ÿç¾ã™ã‚‹
 */
 
-/*ƒAƒ“ƒ`ƒpƒ^[ƒ“:ƒƒ“ƒXƒeƒbƒv‚Å‰ðŒˆ‚µ‚æ‚¤‚Æ‚·‚é*/
-
-
-/*ƒfƒƒŠƒbƒg*/
-
-
+/*ã‚¢ãƒ³ãƒãƒ‘ã‚¿ãƒ¼ãƒ³:ãƒ¯ãƒ³ã‚¹ãƒ†ãƒƒãƒ—ã§è§£æ±ºã—ã‚ˆã†ã¨ã™ã‚‹*/
+/*ãƒ‡ãƒ¡ãƒªãƒƒãƒˆ*/
 /*
-•¡”ƒ^ƒXƒN‚ðŽÀŒ»‚·‚é’†‚ÅˆÓ}‚µ‚È‚¢ƒfƒJƒ‹ƒgÏ‚ª”­¶
-(Œ‹‡‚·‚éƒe[ƒuƒ‹‚ªŠÖ˜A‚ð§ŒÀ‚·‚éðŒ‚ðŽ‚½‚È‚¢‚Æ‚«•Ð•û‚ª‘S‚Ä‚Ìs‚ªŒ‹‡‚³‚ê‚Ä‚µ‚Ü‚¤)
+è¤‡æ•°ã‚¿ã‚¹ã‚¯ã‚’å®Ÿç¾ã™ã‚‹ä¸­ã§æ„å›³ã—ãªã„ãƒ‡ã‚«ãƒ«ãƒˆç©ãŒç™ºç”Ÿ
+(çµåˆã™ã‚‹ãƒ†ãƒ¼ãƒ–ãƒ«ãŒé–¢é€£ã‚’åˆ¶é™ã™ã‚‹æ¡ä»¶ã‚’æŒãŸãªã„ã¨ãç‰‡æ–¹ãŒå…¨ã¦ã®è¡ŒãŒçµåˆã•ã‚Œã¦ã—ã¾ã†)
 */
 SELECT p.product_id, COUNT(f.bug_id) AS count_fixed, COUNT(o.bug_id) AS count_open
 FROM BugsProdcuts AS p
@@ -20,14 +16,12 @@ INNER JOIN Bugs AS o ON p2.bug_id = o.bug_id AND o.status = 'OPEN'
 WHERE p.product_id = 1
 GROUP BY p.product_id;
 /*
-product_id:1
-count_fixed:77@@–{—ˆ11
-count_open:77     –{—ˆ7
-f,oŠÔ‚ÅŒ‹‡‚ª‚È‚¢‚Ì‚Å11s‚ÌC³Ï‚ÝƒoƒO*7s‚Ì–¢C³ƒoƒO77‚Æ‚È‚Á‚Ä‚µ‚Ü‚¤
+product_id:1 count_fixed:77ã€€æœ¬æ¥11  count_open:77     æœ¬æ¥7
+f,oé–“ã§çµåˆãŒãªã„ã®ã§11è¡Œã®ä¿®æ­£æ¸ˆã¿ãƒã‚°*7è¡Œã®æœªä¿®æ­£ãƒã‚°ï¼77ã¨ãªã£ã¦ã—ã¾ã†
 */
 
-/*‰ðŒˆôF•ªŠ„“Ž¡*/
---ˆ—‚ð•ª‚¯‚é
+/*è§£æ±ºç­–ï¼šåˆ†å‰²çµ±æ²»*/
+--å‡¦ç†ã‚’åˆ†ã‘ã‚‹
 SELECT p.product_id, COUNT(f.bug_id) AS count_fixed
 FROM BugsProdcuts AS p
 LEFT OUTER JOIN Bugs AS f ON p.bug_id = f.bug_id AND f.status = 'FIXED'
@@ -40,7 +34,7 @@ LEFT OUTER JOIN Bugs AS o ON p2.bug_id = o.bug_id AND o.status = 'OPEN'
 WHERE p.product_id = 1;
 GROUP BY p.product_id;
 
---union‚ðŽg—p
+--unionã‚’ä½¿ç”¨
 (
 	SELECT p.product_id, COUNT(f.bug_id) AS bug_count
 	FROM BugsProdcuts AS p
